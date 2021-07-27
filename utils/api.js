@@ -9,8 +9,8 @@ export function getDecks() {
       const decks = await AsyncStorage.getItem("DECKS");
       if (decks !== null) {
         // We have data!!
-        console.log("get decks: ", decks);
-        return decks;
+        console.log("from get decks: ", JSON.parse(decks));
+        return JSON.parse(decks);
       }
       return {};
     } catch (error) {
@@ -27,25 +27,42 @@ export function getDeck() {}
 
 //take in a single title argument and add it to the decks.
 export async function saveDeckTitle(title) {
-  let decksSting = getDecks();
-  if (decksSting !== undefined) {
-    let deckss = JSON.parse(decksSting);
-    console.log("deck string", deckss);
-  }
+  //   let decksSting = getDecks();
+  //   if (decksSting !== undefined) {
+  //     let deckss = JSON.parse(decksSting);
+  //     console.log("deck string", deckss);
+  //   }
 
-  let decks = {};
+ // const decks = getDecks();
+ let getDecks = {}
+ try {
+    const decks = await AsyncStorage.getItem("DECKS");
+    if (decks !== null) {
+      // We have data!!
+      console.log("from get decks: ", JSON.parse(decks));
+      getDecks = JSON.parse(decks);
+    }
+  } catch (error) {
+    // Error retrieving data
+    console.log(error);
+  }
+  console.log("old decks", getDecks);
   //   if(decksSting !== null){
   //      decks = JSON.parse(decksSting);
   //   }
+  let newDecks = {};
+  if (getDecks !== null) {
+    newDecks = { ...getDecks, [title]: { title: title, question: [] } };
+  } else {
+    newDecks = { [title]: { title: title, question: [] } };
+  }
 
-  let newDecks = { ...decks, title };
   console.log("new decks", newDecks);
   try {
     await AsyncStorage.setItem("DECKS", JSON.stringify(newDecks));
     //  const value = await AsyncStorage.getItem("DECKS");
-    const value = getDecks();
-    const deck = JSON.parse(value);
-    console.log("get item", deck);
+    // const value = getDecks();
+    console.log("get item", JSON.stringify(newDecks));
   } catch (error) {
     // Error saving data
   }

@@ -40,6 +40,10 @@ function generateUID() {
   );
 }
 
+export function getDefault(){
+    return defaultDecks;
+}
+
 export function getDecks() {
   const decks = async () => {
     try {
@@ -48,14 +52,27 @@ export function getDecks() {
         // We have data!!
         console.log("from get decks: ", JSON.parse(decks));
         return JSON.parse(decks);
+      } else {
+        AsyncStorage.setItem("DECKS", JSON.stringify(defaultDecks));
+        return defaultDecks;
       }
-      return {};
     } catch (error) {
       // Error retrieving data
       console.log(error);
     }
   };
-  decks();
+  return decks();
+
+  //   return AsyncStorage.getItem("DECKS").then(decks => {
+  //     if (decks !== null) {
+  //         console.log('decks has data',decks)
+  //       return decks;
+  //     } else {
+  //         console.log('deck has no data')
+  //       AsyncStorage.setItem("DECKS", JSON.stringify(defaultDecks));
+  //       return defaultDecks;
+  //     }
+  //   });
 }
 
 // take in a single id argument

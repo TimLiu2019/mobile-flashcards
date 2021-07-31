@@ -40,8 +40,8 @@ function generateUID() {
   );
 }
 
-export function getDefault(){
-    return defaultDecks;
+export function getDefault() {
+  return defaultDecks;
 }
 
 export function getDecks() {

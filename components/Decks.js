@@ -9,7 +9,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getDefault } from "../utils/api";
 import { Deck } from "./Deck";
-import { useNavigation } from "@react-navigation/native";
+
 
 const Decks = ({navigation}) => {
   const [decks, setDecks] = useState({});

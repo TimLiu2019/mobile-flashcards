@@ -1,10 +1,13 @@
 import React from "react";
 import { View, Text } from "react-native";
+import { useRoute } from '@react-navigation/native';
 
-const Deck = (deck) => {
+const Deck = () => {
+  const route = useRoute();
   return (
     <View>
-      <Text>{deck.title}</Text>
+      <Text>{route.params.deck.title}</Text>
+      <Text>{route.params.deck.questions ? route.params.deck.questions.length : 0 } cards</Text>
     </View>
   );
 };

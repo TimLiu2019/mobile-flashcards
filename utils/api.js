@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
 // return all of the decks along with their titles,
 // questions, and answers
 
@@ -63,16 +64,6 @@ export function getDecks() {
   };
   return decks();
 
-  //   return AsyncStorage.getItem("DECKS").then(decks => {
-  //     if (decks !== null) {
-  //         console.log('decks has data',decks)
-  //       return decks;
-  //     } else {
-  //         console.log('deck has no data')
-  //       AsyncStorage.setItem("DECKS", JSON.stringify(defaultDecks));
-  //       return defaultDecks;
-  //     }
-  //   });
 }
 
 // take in a single id argument
@@ -81,13 +72,6 @@ export function getDeck() {}
 
 //take in a single title argument and add it to the decks.
 export async function saveDeckTitle(title) {
-  //   let decksSting = getDecks();
-  //   if (decksSting !== undefined) {
-  //     let deckss = JSON.parse(decksSting);
-  //     console.log("deck string", deckss);
-  //   }
-
-  // const decks = getDecks();
   let getDecks = {};
   try {
     const decks = await AsyncStorage.getItem("DECKS");
@@ -101,9 +85,7 @@ export async function saveDeckTitle(title) {
     console.log(error);
   }
   console.log("old decks", getDecks);
-  //   if(decksSting !== null){
-  //      decks = JSON.parse(decksSting);
-  //   }
+  
   let newDecks = {};
   if (getDecks !== null) {
     newDecks = {
@@ -129,4 +111,27 @@ export async function saveDeckTitle(title) {
 //add the card to the list of questions
 //for the deck with the associated title.
 
-export function addCardToDeck() {}
+export async function addCardToDeck(title,card) {
+  let getDecks = {};
+  try {
+    const decks = await AsyncStorage.getItem("DECKS");
+    if (decks !== null) {
+      // We have data!!
+      console.log("from get decks: ", JSON.parse(decks));
+      getDecks = JSON.parse(decks);
+    }
+  } catch (error) {
+    // Error retrieving data
+    console.log(error);
+  }
+  console.log(" decks", getDecks);
+  getDecks[title].questions.push(card);
+  
+  console.log("add card to decks", getDecks);
+  try {
+    await AsyncStorage.mergeItem("DECKS", JSON.stringify(getDecks));
+    console.log("get item", JSON.stringify(getDecks));
+  } catch (error) {
+    // Error saving data
+  }
+}

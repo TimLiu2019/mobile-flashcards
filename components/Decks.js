@@ -17,6 +17,7 @@ const Decks = ({navigation}) => {
   useEffect(() => {
     async function fetchData() {
       try {
+     
         const decks = await AsyncStorage.getItem("DECKS");
 
         const defaultDecks = getDefault();

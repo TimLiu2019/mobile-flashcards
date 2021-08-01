@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-const Quzi = () => {
+const Quiz = () => {
   return (
     <View>
       <Text>Quiz</Text>

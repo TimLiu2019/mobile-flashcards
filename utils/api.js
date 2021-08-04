@@ -1,6 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
 // return all of the decks along with their titles,
 // questions, and answers
 
@@ -46,24 +45,14 @@ export function getDefault() {
 }
 
 export function getDecks() {
-  const decks = async () => {
-    try {
-      const decks = await AsyncStorage.getItem("DECKS");
-      if (decks !== null) {
-        // We have data!!
-        console.log("from get decks: ", JSON.parse(decks));
-        return JSON.parse(decks);
-      } else {
-        AsyncStorage.setItem("DECKS", JSON.stringify(defaultDecks));
-        return defaultDecks;
-      }
-    } catch (error) {
-      // Error retrieving data
-      console.log(error);
+  return AsyncStorage.getItem("DECKS").then(decks => {
+    if (decks !== null) {
+      return JSON.parse(decks);
+    } else {
+      AsyncStorage.setItem("DECKS", JSON.stringify(defaultDecks));
+      return defaultDecks;
     }
-  };
-  return decks();
-
+  });
 }
 
 // take in a single id argument
@@ -85,7 +74,7 @@ export async function saveDeckTitle(title) {
     console.log(error);
   }
   console.log("old decks", getDecks);
-  
+
   let newDecks = {};
   if (getDecks !== null) {
     newDecks = {
@@ -111,7 +100,7 @@ export async function saveDeckTitle(title) {
 //add the card to the list of questions
 //for the deck with the associated title.
 
-export async function addCardToDeck(title,card) {
+export async function addCardToDeck(title, card) {
   let getDecks = {};
   try {
     const decks = await AsyncStorage.getItem("DECKS");
@@ -126,7 +115,7 @@ export async function addCardToDeck(title,card) {
   }
   console.log(" decks", getDecks);
   getDecks[title].questions.push(card);
-  
+
   console.log("add card to decks", getDecks);
   try {
     await AsyncStorage.mergeItem("DECKS", JSON.stringify(getDecks));

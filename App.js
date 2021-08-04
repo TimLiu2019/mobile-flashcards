@@ -3,10 +3,15 @@ import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
+import { Provider } from "react-redux";
+import reducer from "./reducers";
+import { createStore } from "redux";
+import middleware from './middleware'
 import AddDeck from "./components/AddDeck";
 import AddCard from "./components/AddCard";
-import Decks from './components/Decks'
-import Deck from './components/Deck'
+import Decks from "./components/Decks";
+import Dashboard from './components/Dashboard'
+import Deck from "./components/Deck";
 
 export default function App() {
   const Tab = createBottomTabNavigator();
@@ -20,18 +25,20 @@ export default function App() {
   const Stack = createStackNavigator();
   const DecksStackNavigator = () => (
     <Stack.Navigator>
-      <Stack.Screen name="Decks" component={Decks} />
+      <Stack.Screen name="Dashboard" component={Dashboard} />
       <Stack.Screen name="Deck" component={Deck} />
       <Stack.Screen name="AddCard" component={AddCard} />
     </Stack.Navigator>
   );
 
   return (
-    <View style={{ flex: 1 }}>
-      <NavigationContainer>
-        <TabNavigator />
-      </NavigationContainer>
-    </View>
+    <Provider store={createStore(reducer,middleware)}>
+      <View style={{ flex: 1 }}>
+        <NavigationContainer>
+          <TabNavigator />
+        </NavigationContainer>
+      </View>
+    </Provider>
   );
 }
 

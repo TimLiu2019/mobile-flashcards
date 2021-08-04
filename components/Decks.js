@@ -9,36 +9,38 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getDefault } from "../utils/api";
 import { Deck } from "./Deck";
+import { connect } from "react-redux";
+import { handleInitialData } from "../actions/index";
 
-
-const Decks = ({navigation}) => {
-  const [decks, setDecks] = useState({});
- // const navigation = useNavigation();
+const Decks = props => {
+  // const [decks, setDecks] = useState({});
+  // const navigation = useNavigation();
   useEffect(() => {
-    async function fetchData() {
-      try {
-     
-        const decks = await AsyncStorage.getItem("DECKS");
+    // async function fetchData() {
+    //   try {
+    //     const decksFromAsync = await AsyncStorage.getItem("DECKS");
 
-        const defaultDecks = getDefault();
+    //     const defaultDecks = getDefault();
 
-        if (decks !== null) {
-          setDecks(JSON.parse(decks));
-          // We have data!!
-          console.log("from get decks: ", JSON.parse(decks));
-          return JSON.parse(decks);
-        } else {
-          AsyncStorage.setItem("DECKS", JSON.stringify(defaultDecks));
-          setDecks(JSON.stringify(defaultDecks));
-          return defaultDecks;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    //     if (decksFromAsync !== null) {
+    //       setDecks(JSON.parse(decksFromAsync));
+    //       // We have data!!
+    //       console.log("from get decks: ", JSON.parse(decksFromAsync));
+    //       return JSON.parse(decksFromAsync);
+    //     } else {
+    //       AsyncStorage.setItem("DECKS", JSON.stringify(defaultDecks));
+    //       setDecks(JSON.stringify(defaultDecks));
+    //       return defaultDecks;
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // }
 
-    fetchData();
+    //fetchData();
+   
   }, []);
+  decks = props.decks;
 
   return (
     <SafeAreaView>
@@ -50,7 +52,9 @@ const Decks = ({navigation}) => {
             return !deck.title ? null : (
               <TouchableOpacity
                 key={deck.title}
-                onPress={() => navigation.navigate("Deck", {deck:deck})}
+                onPress={() =>
+                  props.navigation.navigate("Deck", { deck: deck })
+                }
               >
                 <View>
                   <Text>{deck.title}</Text>
@@ -68,5 +72,10 @@ const Decks = ({navigation}) => {
     </SafeAreaView>
   );
 };
+function mapStateToProps(state) {
+  return {
+    decks: state
+  };
+}
 
-export default Decks;
+export default connect(mapStateToProps)(Decks);

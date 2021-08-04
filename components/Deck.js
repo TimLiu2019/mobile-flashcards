@@ -1,10 +1,18 @@
 import React from "react";
 import { View, Text, TouchableHighlight } from "react-native";
 import { useRoute } from "@react-navigation/native";
+import { connect } from "react-redux";
+import { handleRemoveDeck } from "../actions";
+import { useNavigation } from '@react-navigation/native';
 
-const Deck = ({navigation}) => {
+const Deck = props => {
   const route = useRoute();
   const deck = route.params.deck;
+  const navigation = useNavigation(); 
+  const onDeleteDeck = () => {
+    props.onHandleRemoveDeck(deck.title);
+    navigation.navigate("Dashboard");
+  };
   return (
     <View>
       <Text>{route.params.deck.title}</Text>
@@ -13,25 +21,30 @@ const Deck = ({navigation}) => {
         cards
       </Text>
       <TouchableHighlight
-        onPress={() => navigation.navigate("AddCard", { title: deck.title })}
+        onPress={() => {
+          props.navigation.navigate("AddCard", { title: deck.title });
+        }}
       >
-        <Text >Add Card</Text>
+        <Text>Add Card</Text>
       </TouchableHighlight>
 
-      <TouchableHighlight
-       
-      >
-        <Text >Start Quiz</Text>
+      <TouchableHighlight>
+        <Text>Start Quiz</Text>
       </TouchableHighlight>
 
-      <TouchableHighlight
-
-  
-      >
-        <Text >Delete</Text>
+      <TouchableHighlight onPress={() => onDeleteDeck()}>
+        <Text>Delete</Text>
       </TouchableHighlight>
     </View>
   );
 };
 
-export default Deck;
+const mapDispatchToProps = dispatch => {
+  return {
+    onHandleRemoveDeck: title => {
+      dispatch(handleRemoveDeck(title));
+    }
+  };
+};
+
+export default connect(null,mapDispatchToProps)(Deck);

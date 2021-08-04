@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { View, Text,TextInput,Button } from "react-native";
+import { View, Text, TextInput, Button } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { addCardToDeck } from "../utils/api";
+import { connect } from "react-redux";
+import { handleAddCard } from "../actions";
 
-const AddCard = ({}) => {
+const AddCard = (props) => {
   const route = useRoute();
   const title = route.params.title;
   const [question, setQuestion] = useState("");
@@ -11,10 +13,11 @@ const AddCard = ({}) => {
 
   const submitCard = () => {
     console.log("submit card");
-
-    addCardToDeck(title, { question: question, answer: answer });
+    props.handleAddCardToDeck(title,question,answer)
+   // addCardToDeck(title, { question: question, answer: answer });
     setQuestion("");
     setAnswer("");
+    props.navigation.navigate("Dashboard");
   };
 
   return (
@@ -37,4 +40,15 @@ const AddCard = ({}) => {
   );
 };
 
-export default AddCard;
+const mapDispatchToProps = dispatch => {
+  return {
+    handleAddCardToDeck: (title,question,answer) => {
+      dispatch(handleAddCard(title,question,answer));
+    }
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(AddCard);

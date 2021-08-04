@@ -8,12 +8,15 @@ export default function decks(state = {}, action) {
     }
     case ADD_DECK: {
       return produce(state, draft => {
-        draft[action.title]={title:action.title,questions:[]};
+        draft[action.title] = { title: action.title, questions: [] };
       });
     }
     case ADD_CARD:
       return produce(state, draft => {
-        draft[action.title].questions.push(action.card);
+        draft[action.title].questions.push({
+          question: action.question,
+          answer: action.answer
+        });
       });
     default:
       return state;

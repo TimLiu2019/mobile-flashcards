@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -10,37 +10,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getDefault } from "../utils/api";
 import { Deck } from "./Deck";
 import { connect } from "react-redux";
+import { useNavigation } from '@react-navigation/native';
 
 
 const Decks = props => {
-  // const [decks, setDecks] = useState({});
-  // const navigation = useNavigation();
-  useEffect(() => {
-    // async function fetchData() {
-    //   try {
-    //     const decksFromAsync = await AsyncStorage.getItem("DECKS");
-
-    //     const defaultDecks = getDefault();
-
-    //     if (decksFromAsync !== null) {
-    //       setDecks(JSON.parse(decksFromAsync));
-    //       // We have data!!
-    //       console.log("from get decks: ", JSON.parse(decksFromAsync));
-    //       return JSON.parse(decksFromAsync);
-    //     } else {
-    //       AsyncStorage.setItem("DECKS", JSON.stringify(defaultDecks));
-    //       setDecks(JSON.stringify(defaultDecks));
-    //       return defaultDecks;
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // }
-
-    //fetchData();
-   
-  }, []);
   decks = props.decks;
+  const navigation = useNavigation(); 
 
   return (
     <SafeAreaView>
@@ -53,7 +28,7 @@ const Decks = props => {
               <TouchableOpacity
                 key={deck.title}
                 onPress={() =>
-                  props.navigation.navigate("Deck", { deck: deck })
+                  navigation.navigate("Deck", { deck: deck })
                 }
               >
                 <View>

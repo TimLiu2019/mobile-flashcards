@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, Text, Button, TextInput, SafeAreaView } from "react-native";
-import { saveDeckTitle } from "../utils/api";
 import { connect } from "react-redux";
 import { handleAddDeck } from "../actions";
 

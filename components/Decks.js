@@ -10,7 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getDefault } from "../utils/api";
 import { Deck } from "./Deck";
 import { connect } from "react-redux";
-import { handleInitialData } from "../actions/index";
+
 
 const Decks = props => {
   // const [decks, setDecks] = useState({});

@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { View, Text, Button, TextInput, SafeAreaView } from "react-native";
 import { saveDeckTitle } from "../utils/api";
+import { connect } from "react-redux";
+import { handleAddDeck } from "../actions";
 
-const AddDeck = () => {
+const AddDeck = props => {
   const [title, setTitle] = useState("");
   const submit = () => {
     console.log("submit title");
-
-    saveDeckTitle(title);
+    props.handleAddDeck(title);
     setTitle("");
+    props.navigation.navigate("Dashboard");
   };
   return (
     <SafeAreaView>
@@ -26,4 +28,15 @@ const AddDeck = () => {
   );
 };
 
-export default AddDeck;
+const mapDispatchToProps = dispatch => {
+  return {
+    handleAddDeck: title => {
+      dispatch(handleAddDeck(title));
+    }
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(AddDeck);

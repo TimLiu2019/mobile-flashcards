@@ -88,8 +88,7 @@ export async function saveDeckTitle(title) {
   console.log("new decks", newDecks);
   try {
     await AsyncStorage.setItem("DECKS", JSON.stringify(newDecks));
-    //  const value = await AsyncStorage.getItem("DECKS");
-    // const value = getDecks();
+ 
     console.log("get item", JSON.stringify(newDecks));
   } catch (error) {
     // Error saving data

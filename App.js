@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -6,14 +6,18 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Provider } from "react-redux";
 import reducer from "./reducers";
 import { createStore } from "redux";
-import middleware from './middleware'
+import middleware from "./middleware";
 import AddDeck from "./components/AddDeck";
 import AddCard from "./components/AddCard";
 import Quiz from "./components/Quiz";
-import Dashboard from './components/Dashboard'
+import Dashboard from "./components/Dashboard";
 import Deck from "./components/Deck";
+import { setLocalNotification } from "./utils/helpers";
 
 export default function App() {
+  useEffect(() => {
+    setLocalNotification();
+  }, []);
   const Tab = createBottomTabNavigator();
   const TabNavigator = () => (
     <Tab.Navigator>
@@ -33,7 +37,7 @@ export default function App() {
   );
 
   return (
-    <Provider store={createStore(reducer,middleware)}>
+    <Provider store={createStore(reducer, middleware)}>
       <View style={{ flex: 1 }}>
         <NavigationContainer>
           <TabNavigator />

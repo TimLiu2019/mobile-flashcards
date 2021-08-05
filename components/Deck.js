@@ -28,7 +28,9 @@ const Deck = props => {
         <Text>Add Card</Text>
       </TouchableHighlight>
 
-      <TouchableHighlight>
+      <TouchableHighlight  onPress={() => {
+          props.navigation.navigate("Quiz", { deck: deck });
+        }}>
         <Text>Start Quiz</Text>
       </TouchableHighlight>
 

@@ -9,7 +9,7 @@ import { createStore } from "redux";
 import middleware from './middleware'
 import AddDeck from "./components/AddDeck";
 import AddCard from "./components/AddCard";
-import Decks from "./components/Decks";
+import Quiz from "./components/Quiz";
 import Dashboard from './components/Dashboard'
 import Deck from "./components/Deck";
 
@@ -28,6 +28,7 @@ export default function App() {
       <Stack.Screen name="Dashboard" component={Dashboard} />
       <Stack.Screen name="Deck" component={Deck} />
       <Stack.Screen name="AddCard" component={AddCard} />
+      <Stack.Screen name="Quiz" component={Quiz} />
     </Stack.Navigator>
   );
 

@@ -1,9 +1,15 @@
 import React, { useState } from "react";
-import { View, Text, Button } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  TouchableHighlight,
+  StyleSheet
+} from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { clearLocalNotification, setLocalNotification } from "../utils/helpers";
-
+import { primary, white, secondary } from "../utils/colors";
 const Quiz = props => {
   const route = useRoute();
   const navigation = useNavigation();
@@ -27,7 +33,7 @@ const Quiz = props => {
       setQuestionIndex(current => current + 1);
     }
 
-    clearLocalNotification().then(setLocalNotification);
+     clearLocalNotification().then(setLocalNotification);
   };
 
   const onRestartQuiz = () => {
@@ -37,13 +43,12 @@ const Quiz = props => {
     setQuestionIndex(0);
   };
   const onBackToDeck = () => {
-    console.log("back to deck");
     navigation.navigate("Deck", { deck: deck });
   };
 
   if (questions.length === 0) {
     return (
-      <View>
+      <View style={styles.center}>
         <Text>
           Sorry, you cannot take a quiz, because there are no cards in the deck
         </Text>
@@ -52,42 +57,119 @@ const Quiz = props => {
   }
   if (!showScore) {
     return (
-      <View>
-        <Text>
-          {questionIndex + 1}/{questions.length}
-        </Text>
-        {showAnswer ? (
-          <Text>{questions[questionIndex].answer}</Text>
-        ) : (
-          <Text>{questions[questionIndex].question}</Text>
-        )}
-        <Button
-          title={showAnswer ? "question" : "answer"}
-          onPress={() => onShowAnswer()}
-        ></Button>
-        <Button
-          title="Correct"
-          onPress={() => onCheckAnswer("Correct")}
-        ></Button>
-        <Button
-          title="Incorrect"
-          onPress={() => onCheckAnswer("Inorrect")}
-        ></Button>
+      <View style={styles.container}>
+        <View>
+          <Text style={styles.progress}>
+            {questionIndex + 1}/{questions.length}
+          </Text>
+        </View>
+        <View style={styles.center}>
+          {showAnswer ? (
+            <Text>{questions[questionIndex].answer}</Text>
+          ) : (
+            <Text>{questions[questionIndex].question}</Text>
+          )}
+          <Button
+            title={showAnswer ? "question" : "answer"}
+            onPress={() => onShowAnswer()}
+          ></Button>
+          <TouchableHighlight
+            onPress={() => onCheckAnswer("Correct")}
+            style={styles.buttonCorrect}
+          >
+            <Text style={styles.text}>Correct</Text>
+          </TouchableHighlight>
+
+          <TouchableHighlight
+            onPress={() => onCheckAnswer("Inorrect")}
+            style={styles.button}
+          >
+            <Text style={styles.text}>Incorrect</Text>
+          </TouchableHighlight>
+        </View>
       </View>
     );
   }
   if (showScore) {
     return (
-      <View>
-        <Text>Your Score:</Text>
-        <Text>
+      <View style={styles.center}>
+        <Text style={styles.scoreTitle}>Your Score:</Text>
+        <Text style={styles.cardTitle}>
           {correctAnswer} of {questions.length}
         </Text>
-        <Button title="Restart Quiz" onPress={() => onRestartQuiz()}></Button>
-        <Button title="Back to Deck" onPress={() => onBackToDeck()}></Button>
+        <TouchableHighlight
+           onPress={() => onRestartQuiz()}
+            style={styles.button}
+          >
+            <Text style={styles.text}>Restart Quiz</Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+           onPress={() => onBackToDeck()}
+            style={styles.button}
+          >
+            <Text style={styles.text}>Back to Deck</Text>
+          </TouchableHighlight>
+       
       </View>
     );
   }
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20
+  },
+  center: {
+    flex: 2,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 30,
+    marginRight: 30,
+    marginBottom: 30
+  },
+
+  progress: {
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    flexDirection: "row"
+  },
+  button: {
+    backgroundColor: primary,
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 15,
+    width: "100%",
+    marginVertical: 10,
+    marginTop: 20
+  },
+  buttonCorrect: {
+    backgroundColor: secondary,
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 15,
+    width: "100%",
+    marginVertical: 10,
+    marginTop: 20
+  },
+  text: {
+    color: white,
+    fontSize: 18,
+    textTransform: "uppercase",
+    fontWeight: "bold"
+  },
+  scoreTitle: {
+    color: primary,
+    fontSize: 20,
+    marginBottom:20
+  },
+  cardTitle: {
+    color: secondary,
+    fontSize: 28,
+    marginBottom:20
+  }
+});
 
 export default Quiz;

@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import produce from "immer";
 // return all of the decks along with their titles,
 // questions, and answers
-
+const DECK_KEY ='Flashcards:decks'
 const defaultDecks = {
   React: {
     title: "React",
@@ -45,27 +45,25 @@ export function getDefault() {
 }
 
 export function getDecks() {
-  return AsyncStorage.getItem("DECKS").then(decks => {
+  return AsyncStorage.getItem(DECK_KEY).then(decks => {
     if (decks !== null) {
       return JSON.parse(decks);
     } else {
-      AsyncStorage.setItem("DECKS", JSON.stringify(defaultDecks));
+      AsyncStorage.setItem(DECK_KEY, JSON.stringify(defaultDecks));
       return defaultDecks;
     }
   });
 }
 
-//and return the deck associated with that id.
-export function getDeck() {}
+
 
 //take in a single title argument and add it to the decks.
 export async function saveDeckTitle(title) {
   let getDecks = {};
   try {
-    const decks = await AsyncStorage.getItem("DECKS");
+    const decks = await AsyncStorage.getItem(DECK_KEY);
     if (decks !== null) {
-      // We have data!!
-      console.log("from get decks: ", JSON.parse(decks));
+
       getDecks = JSON.parse(decks);
     }
   } catch (error) {
@@ -84,11 +82,10 @@ export async function saveDeckTitle(title) {
     newDecks = { [title]: { title: title, id: generateUID(), questions: [] } };
   }
 
-  console.log("new decks", newDecks);
+  
   try {
-    await AsyncStorage.setItem("DECKS", JSON.stringify(newDecks));
+    await AsyncStorage.setItem(DECK_KEY, JSON.stringify(newDecks));
 
-    console.log("get item", JSON.stringify(newDecks));
   } catch (error) {
     // Error saving data
   }
@@ -110,13 +107,11 @@ export async function addCardToDeck(title, card) {
     // Error retrieving data
     console.log(error);
   }
-  console.log(" decks", getDecks);
   getDecks[title].questions.push(card);
 
   console.log("add card to decks", getDecks);
   try {
     await AsyncStorage.mergeItem("DECKS", JSON.stringify(getDecks));
-    console.log("get item", JSON.stringify(getDecks));
   } catch (error) {
     // Error saving data
   }
@@ -125,9 +120,8 @@ export async function addCardToDeck(title, card) {
 export async function _removeDeck(title) {
   let getDecks = {};
   try {
-    const decks = await AsyncStorage.getItem("DECKS");
+    const decks = await AsyncStorage.getItem(DECK_KEY);
     if (decks !== null) {
-      console.log("from get decks: ", JSON.parse(decks));
       getDecks = JSON.parse(decks);
     }
   } catch (error) {
@@ -140,8 +134,7 @@ export async function _removeDeck(title) {
   });
 
   try {
-    await AsyncStorage.mergeItem("DECKS", JSON.stringify(newDecks));
-    console.log("after removing item", JSON.stringify(newDecks));
+    await AsyncStorage.mergeItem(DECK_KEY, JSON.stringify(newDecks));
   } catch (error) {
     // Error saving data
   }

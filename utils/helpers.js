@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Permissions from "expo-permissions";
-import { Notifications } from "expo";
+import * as Notifications from 'expo-notifications';
 
 const NOTIFICATION_KEY = "Flashcards:notifications";
 
@@ -33,7 +33,7 @@ export function setLocalNotification() {
          
               },
               {
-                time: tomorrow.getTime() + 6000, // almost every minute it should show the notification
+                time: tomorrow.getTime() + 6000, 
                 repeat: "minute"
               }
             );

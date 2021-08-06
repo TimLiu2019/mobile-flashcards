@@ -11,11 +11,12 @@ import { handleAddDeck } from "../actions";
 import { primary,white,light } from "../utils/colors";
 
 const AddDeck = props => {
+  const {navigation,handleAddDeck} = props
   const [title, setTitle] = useState("");
   const submit = () => {
-    props.handleAddDeck(title);
+    handleAddDeck(title);
     setTitle("");
-    props.navigation.navigate("Dashboard");
+    navigation.navigate("Dashboard");
   };
   return (
     <View style={styles.center}>

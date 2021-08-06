@@ -24,7 +24,7 @@ const Quiz = props => {
     setShowAnswer(current => !current);
   };
   const onCheckAnswer = answer => {
-    if (questions[questionIndex].answer === answer) {
+    if (answer === 'Correct') {
       setCorrectAnswer(current => current + 1);
     }
     if (questionIndex === questions.length - 1) {
